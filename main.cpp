@@ -1,10 +1,10 @@
 // We pledge our Honor that we have abided by the Stevens Honor System.
 
-// - Thiago Andrade:
+// - Thiago Andrade (ENGR 116-RA):
 // Created card system (vectors that hold the decks, the defines,
 // everything under CARD HELPER FUNCTIONS comment (line 67), main(), and
 // setup())
-// - Vincent Olivieri:
+// - Vincent Olivieri (ENGR 116-RI):
 // Created game logic (everything under MAIN GAME LOGIC comment (line 227))
 
 #include <cstddef>
@@ -296,7 +296,7 @@ void process_card(unsigned char &c) {
     }
   } else if (turn == 1 && cpu_hand.empty()) {
     if (cpu_said_uno) {
-      std::cout << "CPU wins! Better luck next time!" << std::endl;
+      std::cout << "CPU wins! You lost to random numbers LOL!" << std::endl;
       exit(0);
     } else {
       std::cout << "CPU forgot to say UNO! It drew two cards." << std::endl;
@@ -467,13 +467,6 @@ void process_turn() {
       }
     }
 
-    if (cpu_hand.size() == 2 && !cpu_said_uno) {
-      if (rand() % 10 != 9) {
-        std::cout << "CPU said UNO!" << std::endl;
-        cpu_said_uno = true;
-      }
-    }
-
     if (playables.empty()) {
       std::cout << "CPU drew a card!";
       std::this_thread::sleep_for(2s);
@@ -485,6 +478,13 @@ void process_turn() {
         std::cout << std::endl << "CPU placed a ";
         print_card(drawn);
         std::cout << "!" << std::endl;
+
+        if (cpu_hand.size() == 2 && !cpu_said_uno) {
+          if (rand() % 10 != 9) {
+            std::cout << "CPU said UNO!" << std::endl;
+            cpu_said_uno = true;
+          }
+        }
         card_changed = true;
       } else {
         std::cout << " That was the end of its turn." << std::endl;
@@ -492,6 +492,13 @@ void process_turn() {
     } else {
       unsigned char idx = rand() % playables.size();
       unsigned char c = playables[idx];
+
+      if (cpu_hand.size() == 2 && !cpu_said_uno) {
+        if (rand() % 10 != 9) {
+          std::cout << "CPU said UNO!" << std::endl;
+          cpu_said_uno = true;
+        }
+      }
 
       play_card(cpu_hand, discard, c);
       std::cout << "CPU played a ";
@@ -524,8 +531,6 @@ int main() {
 
   while (true) {
     unsigned char &top = discard.back();
-    std::cout << "CPU HAND:" << std::endl;
-    print_hand(cpu_hand);
     process_card(top);
     process_turn();
   }
