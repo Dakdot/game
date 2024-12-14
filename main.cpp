@@ -14,7 +14,6 @@
 #include <iostream>
 #include <stdexcept>
 #include <string>
-#include <sys/resource.h>
 #include <thread>
 #include <vector>
 
